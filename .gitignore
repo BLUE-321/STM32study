@@ -1,0 +1,21 @@
+# Keil generated build output
+Objects/
+Listings/
+DebugConfig/
+
+# Keil per-user and session settings
+*.uvoptx
+*.uvguix*
+
+# Common generated output
+*.axf
+*.hex
+*.bin
+*.map
+*.lst
+*.d
+*.o
+*.crf
+*.dep
+*.htm
+*.build_log.htm
