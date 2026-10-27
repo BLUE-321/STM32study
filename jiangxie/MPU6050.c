@@ -38,17 +38,33 @@ void MPU6050_WriteReg(uint8_t RegAddress, uint8_t Data)
 uint8_t MPU6050_ReadReg(uint8_t RegAddress)
 {
     uint8_t Data;
-    
+    uint8_t ack_status;
+	
     MyI2C_Start();
-    MyI2C_SendByte(MPU6050_ADDRESS); // 0xD0
-    MyI2C_RecieveAck();
+//    MyI2C_SendByte(MPU6050_ADDRESS);// 0xD0
+	MyI2C_SendByte(0xD4);	
+    ack_status = MyI2C_RecieveAck();
+	if(ack_status != 0)
+	{
+		MyI2C_Stop();
+		return 0;
+	}
     MyI2C_SendByte(RegAddress);      // 指向要读的寄存器
-    MyI2C_RecieveAck();
+    ack_status = MyI2C_RecieveAck();
+	if(ack_status != 0)
+	{
+		MyI2C_Stop();
+		return 0;
+	}
     
     MyI2C_Start();                   // 重复起始信号！
     MyI2C_SendByte(MPU6050_ADDRESS | 0x01); // 0xD1，这是读取地址
-    MyI2C_RecieveAck();
-    
+    ack_status = MyI2C_RecieveAck();
+	if(ack_status != 0)
+	{
+		MyI2C_Stop();
+		return 0;
+	}
     Data = MyI2C_RecieveByte();      // 读取数据
     MyI2C_SendAck(1);                // 告诉它：我读完了，非应答 (NACK)
     MyI2C_Stop();
